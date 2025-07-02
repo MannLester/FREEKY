@@ -1,8 +1,10 @@
 "use client"
 
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Moon, Sun, User, Sparkles, Palette } from "lucide-react"
+import { FreekyTransition } from "./FreekyTransition"
 import type { DesignMode } from "../types"
 
 interface HeaderProps {
@@ -22,8 +24,36 @@ export function Header({
   onDesignModeChange,
   onProfileClick,
 }: HeaderProps) {
+  const [clickPosition, setClickPosition] = useState<{ x: number; y: number } | null>(null)
+  const [isHoveringFreeky, setIsHoveringFreeky] = useState(false)
+
+  // Function to handle design mode change with position tracking
+  const handleDesignModeChange = (value: DesignMode, event?: React.MouseEvent) => {
+    if (value === "FREEKY!" && event) {
+      // Record the click position for the animation
+      setClickPosition({ x: event.clientX, y: event.clientY })
+    }
+    onDesignModeChange(value)
+  }
+  
+  // Handle dropdown state to detect when it's open
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  
+  // Function to handle the dropdown open/close
+  const handleDropdownOpenChange = (open: boolean) => {
+    setIsDropdownOpen(open)
+    if (!open) {
+      setIsHoveringFreeky(false)
+    }
+  }
   return (
-    <nav
+    <>
+      <FreekyTransition 
+        isActive={isFreaky} 
+        clickPosition={clickPosition} 
+        isHoveringFreeky={isHoveringFreeky} 
+      />
+      <nav
       className={`sticky top-0 z-50 backdrop-blur-md border-b ${
         isDarkMode
           ? isFreaky
@@ -52,7 +82,12 @@ export function Header({
           </div>
 
           <div className="flex items-center space-x-4">
-            <Select value={designMode} onValueChange={onDesignModeChange}>
+            <Select 
+              value={designMode} 
+              onValueChange={(value: DesignMode) => handleDesignModeChange(value)}
+              onOpenChange={handleDropdownOpenChange}
+              open={isDropdownOpen}
+            >
               <SelectTrigger className={`w-40 ${isFreaky ? "border-purple-300" : "border-gray-300"}`}>
                 <div className="flex items-center space-x-2">
                   <Palette className="h-4 w-4" />
@@ -61,7 +96,15 @@ export function Header({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Simple Design">Simple Design</SelectItem>
-                <SelectItem value="FREEKY!">FREEKY! 🌈</SelectItem>
+                <SelectItem 
+                  value="FREEKY!" 
+                  onClick={(e) => handleDesignModeChange("FREEKY!", e as React.MouseEvent)}
+                  onMouseEnter={() => setIsHoveringFreeky(true)}
+                  onMouseLeave={() => setIsHoveringFreeky(false)}
+                  className="relative z-50"
+                >
+                  FREEKY! 🌈
+                </SelectItem>
               </SelectContent>
             </Select>
 
@@ -94,5 +137,6 @@ export function Header({
         </div>
       </div>
     </nav>
+    </>
   )
 }
