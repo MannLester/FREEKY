@@ -21,22 +21,22 @@ export function StickyNoteCard({ note, isFreaky }: StickyNoteCardProps) {
     >
       <CardContent className="p-5 space-y-4">
         <p
-          className={`text-sm leading-relaxed font-medium ${isFreaky ? "text-white drop-shadow-sm" : "text-gray-800"}`}
+          className={`text-sm leading-relaxed font-medium ${isFreaky ? "text-gray-900 dark:text-white drop-shadow-sm" : "text-gray-800"}`}
         >
           {note.text}
         </p>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <span className={`text-2xl ${isFreaky ? "drop-shadow-sm" : ""}`}>{note.mood}</span>
+            <span className={`text-2xl ${isFreaky ? "drop-shadow-sm dark:text-white text-gray-900" : ""}`}>{note.mood}</span>
             <div
               className={`flex items-center space-x-3 text-xs font-medium ${
-                isFreaky ? "text-white/90" : "text-gray-600"
+                isFreaky ? "text-gray-900 dark:text-white/90" : "text-gray-600"
               }`}
             >
               <div
                 className={`flex items-center space-x-1 rounded-full px-2 py-1 ${
-                  isFreaky ? "bg-white/20 backdrop-blur-sm" : "bg-white/70"
+                  isFreaky ? "bg-black/20 dark:bg-white/30 backdrop-blur-sm" : "bg-white/70"
                 }`}
               >
                 <Heart className="h-3 w-3" />
@@ -44,7 +44,7 @@ export function StickyNoteCard({ note, isFreaky }: StickyNoteCardProps) {
               </div>
               <div
                 className={`flex items-center space-x-1 rounded-full px-2 py-1 ${
-                  isFreaky ? "bg-white/20 backdrop-blur-sm" : "bg-white/70"
+                  isFreaky ? "bg-black/20 dark:bg-white/30 backdrop-blur-sm" : "bg-white/70"
                 }`}
               >
                 <Eye className="h-3 w-3" />
@@ -56,7 +56,7 @@ export function StickyNoteCard({ note, isFreaky }: StickyNoteCardProps) {
           {note.anonymous && (
             <Badge
               className={`text-xs border-0 font-medium ${
-                isFreaky ? "bg-white/30 text-white backdrop-blur-sm" : "bg-gray-200 text-gray-700"
+                isFreaky ? "bg-black/20 dark:bg-white/30 text-gray-900 dark:text-white backdrop-blur-sm" : "bg-gray-200 text-gray-700"
               }`}
             >
               Anonymous {isFreaky ? "🎭" : ""}
@@ -68,7 +68,7 @@ export function StickyNoteCard({ note, isFreaky }: StickyNoteCardProps) {
           <div className="flex justify-end">
             <Badge
               className={`text-xs border-0 font-medium ${
-                isFreaky ? "bg-white/30 text-white backdrop-blur-sm" : "bg-gray-200 text-gray-700"
+                isFreaky ? "bg-black/20 dark:bg-white/30 text-gray-900 dark:text-white backdrop-blur-sm" : "bg-gray-200 text-gray-700"
               }`}
             >
               <Star className="h-3 w-3 mr-1" />

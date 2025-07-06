@@ -7,9 +7,10 @@ interface FreekyTransitionProps {
   isActive: boolean
   clickPosition: { x: number; y: number } | null
   isHoveringFreeky: boolean
+  isDarkMode?: boolean
 }
 
-export function FreekyTransition({ isActive, clickPosition, isHoveringFreeky }: FreekyTransitionProps) {
+export function FreekyTransition({ isActive, clickPosition, isHoveringFreeky, isDarkMode = false }: FreekyTransitionProps) {
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null)
   
   useEffect(() => {
@@ -43,7 +44,9 @@ export function FreekyTransition({ isActive, clickPosition, isHoveringFreeky }: 
               width: 1000,
               height: 1000,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(236,72,153,0.5) 30%, rgba(147,51,234,0.5) 50%, rgba(0,0,0,0) 70%)",
+              background: isDarkMode 
+                ? "radial-gradient(circle, rgba(255,255,255,0.5) 30%, rgba(200,200,255,0.5) 50%, rgba(0,0,0,0) 70%)"
+                : "radial-gradient(circle, rgba(236,72,153,0.5) 30%, rgba(147,51,234,0.5) 50%, rgba(0,0,0,0) 70%)",
               transform: "translate(-50%, -50%)",
               mixBlendMode: "overlay"
             }}
@@ -58,7 +61,9 @@ export function FreekyTransition({ isActive, clickPosition, isHoveringFreeky }: 
             className="fixed inset-0 z-40 pointer-events-none"
             initial={{
               clipPath: `circle(0px at ${clickPosition.x}px ${clickPosition.y}px)`,
-              background: "radial-gradient(circle, rgba(236,72,153,0.8) 0%, rgba(147,51,234,0.8) 50%, rgba(79,70,229,0.8) 100%)"
+              background: isDarkMode
+                ? "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(200,200,255,0.8) 50%, rgba(130,130,240,0.8) 100%)"
+                : "radial-gradient(circle, rgba(236,72,153,0.8) 0%, rgba(147,51,234,0.8) 50%, rgba(79,70,229,0.8) 100%)"
             }}
             animate={{
               clipPath: `circle(2000px at ${clickPosition.x}px ${clickPosition.y}px)`,

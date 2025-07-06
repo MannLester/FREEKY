@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Moon, Sun, User, Plus, Pencil, Heart, Eye, Star, Sparkles, Palette } from "lucide-react"
+import { MotivationalBanner } from "@/components/MotivationalBanner"
 
 export default function FreekyApp() {
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -25,6 +26,17 @@ export default function FreekyApp() {
   const [selectedColor, setSelectedColor] = useState("") // Declare the color variable
 
   const isFreaky = designMode === "FREEKY!"
+  
+  // Apply dark mode class to HTML for Tailwind dark mode support
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    }
+  }, [isDarkMode])
 
   const boards = [
     { name: "World Board", icon: "🌍", tag: "Always Open", active: true },
@@ -244,7 +256,7 @@ export default function FreekyApp() {
                 {isDarkMode ? (
                   <Sun className={`h-5 w-5 ${isFreaky ? "text-yellow-400" : "text-yellow-500"}`} />
                 ) : (
-                  <Moon className={`h-5 w-5 ${isFreaky ? "text-purple-600" : "text-gray-600"}`} />
+                  <Moon className={`h-5 w-5 ${isFreaky ? "text-purple-600" : isDarkMode ? "text-gray-300" : "text-gray-600"}`} />
                 )}
               </Button>
 
@@ -257,7 +269,7 @@ export default function FreekyApp() {
                       isFreaky ? "hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-200" : ""
                     }`}
                   >
-                    <User className={`h-5 w-5 ${isFreaky ? "text-purple-600" : "text-gray-600"}`} />
+                    <User className={`h-5 w-5 ${isFreaky ? "text-purple-600" : isDarkMode ? "text-gray-300" : "text-gray-600"}`} />
                   </Button>
                 </DialogTrigger>
                 <DialogContent
@@ -363,11 +375,7 @@ export default function FreekyApp() {
       </nav>
 
       {/* Motivational Banner - Only in FREEKY mode */}
-      {isFreaky && (
-        <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white text-center py-3 font-bold text-lg shadow-lg">
-          🌈 Be Free, Be FREEKY! Express Yourself Without Limits! 🚀
-        </div>
-      )}
+      <MotivationalBanner isFreaky={isFreaky} isDarkMode={isDarkMode} />
 
       {/* Board Tabs */}
       <div
@@ -394,7 +402,9 @@ export default function FreekyApp() {
                       : "bg-gray-900 text-white"
                     : isFreaky
                       ? "hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-200 hover:scale-105"
-                      : "hover:bg-gray-100"
+                      : isDarkMode
+                        ? "text-gray-300 hover:bg-gray-800"
+                        : "hover:bg-gray-100"
                 }`}
                 onClick={() => setSelectedBoard(board.name)}
               >
@@ -435,7 +445,7 @@ export default function FreekyApp() {
               <CardContent className="p-5 space-y-4">
                 <p
                   className={`text-sm leading-relaxed font-medium ${
-                    isFreaky ? "text-white drop-shadow-sm" : "text-gray-800"
+                    isFreaky && isDarkMode ? "text-white drop-shadow-sm" : isFreaky ? "text-white drop-shadow-sm" : isDarkMode ? "text-white" : "text-gray-800"
                   }`}
                 >
                   {note.text}
@@ -446,12 +456,12 @@ export default function FreekyApp() {
                     <span className={`text-2xl ${isFreaky ? "drop-shadow-sm" : ""}`}>{note.mood}</span>
                     <div
                       className={`flex items-center space-x-3 text-xs font-medium ${
-                        isFreaky ? "text-white/90" : "text-gray-600"
+                        (isFreaky && isDarkMode) ? "text-white" : isFreaky ? "text-white/90" : isDarkMode ? "text-white/90" : "text-gray-600"
                       }`}
                     >
                       <div
                         className={`flex items-center space-x-1 rounded-full px-2 py-1 ${
-                          isFreaky ? "bg-white/20 backdrop-blur-sm" : "bg-white/70"
+                          isFreaky ? "bg-white/20 backdrop-blur-sm" : isDarkMode ? "bg-gray-700 text-white" : "bg-white/70"
                         }`}
                       >
                         <Heart className="h-3 w-3" />
@@ -459,7 +469,7 @@ export default function FreekyApp() {
                       </div>
                       <div
                         className={`flex items-center space-x-1 rounded-full px-2 py-1 ${
-                          isFreaky ? "bg-white/20 backdrop-blur-sm" : "bg-white/70"
+                          isFreaky ? "bg-white/20 backdrop-blur-sm" : isDarkMode ? "bg-gray-700 text-white" : "bg-white/70"
                         }`}
                       >
                         <Eye className="h-3 w-3" />

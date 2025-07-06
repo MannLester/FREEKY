@@ -52,6 +52,7 @@ export function Header({
         isActive={isFreaky} 
         clickPosition={clickPosition} 
         isHoveringFreeky={isHoveringFreeky} 
+        isDarkMode={isDarkMode}
       />
       <nav
       className={`sticky top-0 z-50 backdrop-blur-md border-b ${
@@ -69,7 +70,7 @@ export function Header({
           <div className="flex items-center space-x-3">
             <h1
               className={`text-2xl font-bold ${
-                isFreaky
+                isFreaky && !isDarkMode
                   ? "bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent"
                   : isDarkMode
                     ? "text-white"
@@ -88,20 +89,20 @@ export function Header({
               onOpenChange={handleDropdownOpenChange}
               open={isDropdownOpen}
             >
-              <SelectTrigger className={`w-40 ${isFreaky ? "border-purple-300" : "border-gray-300"}`}>
+              <SelectTrigger className={`w-40 ${isFreaky ? isDarkMode ? "border-purple-300 text-white" : "border-purple-300" : isDarkMode ? "border-gray-700 text-white" : "border-gray-300"}`}>
                 <div className="flex items-center space-x-2">
-                  <Palette className="h-4 w-4" />
+                  <Palette className={`h-4 w-4 ${isDarkMode && !isFreaky ? "text-white" : ""}`} />
                   <SelectValue />
                 </div>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className={isDarkMode ? "bg-gray-800 text-white border-gray-700" : ""}>
                 <SelectItem value="Simple Design">Simple Design</SelectItem>
                 <SelectItem 
                   value="FREEKY!" 
                   onClick={(e) => handleDesignModeChange("FREEKY!", e as React.MouseEvent)}
                   onMouseEnter={() => setIsHoveringFreeky(true)}
                   onMouseLeave={() => setIsHoveringFreeky(false)}
-                  className="relative z-50"
+                  className={`relative z-50 ${isDarkMode ? "text-white" : ""}`}
                 >
                   FREEKY! 🌈
                 </SelectItem>
